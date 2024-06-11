@@ -22,7 +22,6 @@ const CurrencyByDate = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-    console.log(0);
   };
 
   return (
