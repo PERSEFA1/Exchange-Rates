@@ -8,7 +8,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { fetchCurrencyConversionRate } from "../../api/currencyApi";
-import "./Converter.css";
+import "./style/Converter.css";
 
 const CurrencyConverter = () => {
   const [fromCurrency, setFromCurrency] = useState("");
@@ -31,30 +31,28 @@ const CurrencyConverter = () => {
     <div className="section-2">
       <h1 className="text-well-2">Конвертер валют</h1>
       <div className="subsection-2">
-        <FormControl>
+        <FormControl id="from-currency">
           <InputLabel id="from-currency-label">Из валюты</InputLabel>
           <Select
             labelId="from-currency-label"
             value={fromCurrency}
             onChange={(e) => setFromCurrency(e.target.value)}
           >
-            <MenuItem value="145">USD</MenuItem>
-            <MenuItem value="292">EUR</MenuItem>
-            <MenuItem value="298">RUB</MenuItem>
-            {/* Add other currencies as needed */}
+            <MenuItem value="431">USD</MenuItem>
+            <MenuItem value="451">EUR</MenuItem>
+            <MenuItem value="456">RUB</MenuItem>
           </Select>
         </FormControl>
-        <FormControl>
+        <FormControl id="to-currency">
           <InputLabel id="to-currency-label">В валюту</InputLabel>
           <Select
             labelId="to-currency-label"
             value={toCurrency}
             onChange={(e) => setToCurrency(e.target.value)}
           >
-            <MenuItem value="145">USD</MenuItem>
-            <MenuItem value="292">EUR</MenuItem>
-            <MenuItem value="298">RUB</MenuItem>
-            {/* Add other currencies as needed */}
+            <MenuItem value="431">USD</MenuItem>
+            <MenuItem value="451">EUR</MenuItem>
+            <MenuItem value="456">RUB</MenuItem>
           </Select>
         </FormControl>
         <TextField

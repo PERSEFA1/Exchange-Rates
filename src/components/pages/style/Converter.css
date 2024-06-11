@@ -15,3 +15,11 @@
   margin-left: 60px;
   background-color: #f5f5f5;
 }
+
+#from-currency {
+  margin-right: 30px;
+}
+
+#to-currency {
+  margin-right: 30px;
+}

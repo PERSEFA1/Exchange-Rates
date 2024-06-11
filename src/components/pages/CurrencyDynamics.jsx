@@ -11,7 +11,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { fetchCurrencyDynamics } from "../../api/currencyApi";
-import "./Dynamics.css";
+import "./style/Dynamics.css";
 
 const CurrencyDynamics = () => {
   const [startDate, setStartDate] = useState(null);
@@ -31,12 +31,14 @@ const CurrencyDynamics = () => {
       <h1 className="text-well-3">Динамика курса валют</h1>
       <div className="subsection-3">
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="Дата с"
-            value={startDate}
-            onChange={(newValue) => setStartDate(newValue)}
-            renderInput={(params) => <TextField {...params} />}
-          />
+          <div id="date-picker-1">
+            <DatePicker
+              label="Дата с"
+              value={startDate}
+              onChange={(newValue) => setStartDate(newValue)}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </div>
           <DatePicker
             label="Дата по"
             value={endDate}
@@ -44,17 +46,16 @@ const CurrencyDynamics = () => {
             renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
-        <FormControl>
+        <FormControl id="currency">
           <InputLabel id="currency-label">Валюта</InputLabel>
           <Select
             labelId="currency-label"
             value={currency}
             onChange={(e) => setCurrency(e.target.value)}
           >
-            <MenuItem value="145">USD</MenuItem>
-            <MenuItem value="292">EUR</MenuItem>
-            <MenuItem value="298">RUB</MenuItem>
-            {/* Add other currencies as needed */}
+            <MenuItem value="431">USD</MenuItem>
+            <MenuItem value="451">EUR</MenuItem>
+            <MenuItem value="456">RUB</MenuItem>
           </Select>
         </FormControl>
         <Button

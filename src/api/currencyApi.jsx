@@ -1,31 +1,17 @@
-export const fetchCurrencyRatesByDate = async (date) => {
-  try {
-    const response = await fetch(
-      `https://www.nbrb.by/api/exrates/rates?ondate=${date}&periodicity=0`
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch currency rates");
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching currency rates:", error);
-    throw error;
-  }
-};
-
 export const fetchCurrencyDynamics = async (startDate, endDate, currencyId) => {
   try {
+    const startDateString = startDate.toISOString().split("T")[0];
+    const endDateString = endDate.toISOString().split("T")[0];
     const response = await fetch(
-      `https://www.nbrb.by/api/exrates/rates/dynamics/${currencyId}?startdate=${startDate}&enddate=${endDate}`
+      `https://api.nbrb.by/exrates/rates/dynamics/${currencyId}?startdate=${startDateString}&enddate=${endDateString}`
     );
     if (!response.ok) {
-      throw new Error("Failed to fetch currency dynamics");
+      throw new Error("Ошибка Запроса");
     }
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching currency dynamics:", error);
+    console.error("Ошибка", error);
     throw error;
   }
 };
@@ -37,23 +23,27 @@ export const fetchCurrencyConversionRate = async (
 ) => {
   try {
     const responseFrom = await fetch(
-      `https://www.nbrb.by/api/exrates/rates/${fromCurrencyId}?ondate=${date}`
+      `https://api.nbrb.by/exrates/rates/${fromCurrencyId}?ondate=${date}`
     );
     const responseTo = await fetch(
-      `https://www.nbrb.by/api/exrates/rates/${toCurrencyId}?ondate=${date}`
+      `https://api.nbrb.by/exrates/rates/${toCurrencyId}?ondate=${date}`
     );
 
     if (!responseFrom.ok || !responseTo.ok) {
-      throw new Error("Failed to fetch currency rates for conversion");
+      throw new Error("Ошибка запроса");
     }
 
     const fromRate = await responseFrom.json();
     const toRate = await responseTo.json();
 
-    const conversionRate = fromRate.Cur_OfficialRate / toRate.Cur_OfficialRate;
+    const conversionRate =
+      (fromRate.Cur_OfficialRate /
+        toRate.Cur_OfficialRate /
+        fromRate.Cur_Scale) *
+      toRate.Cur_Scale;
     return conversionRate;
   } catch (error) {
-    console.error("Error fetching currency conversion rate:", error);
+    console.error("Ошибка", error);
     throw error;
   }
 };

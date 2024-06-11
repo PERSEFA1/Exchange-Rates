@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Button } from "@mui/material";
-import "./ByDate.css";
+import "./style/ByDate.css";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -16,11 +16,11 @@ const CurrencyByDate = () => {
     const formattedDate = date.toISOString().split("T")[0];
     try {
       const response = await axios.get(
-        `https://www.nbrb.by/api/exrates/rates?ondate=${date}&periodicity=0`
+        `https://www.nbrb.by/api/exrates/rates?ondate=${formattedDate}&periodicity=0`
       );
       setCurrencies(response.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Ошибка", error);
     }
   };
 
