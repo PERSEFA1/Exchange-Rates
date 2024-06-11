@@ -1,59 +1,78 @@
 import React, { useState } from "react";
-import axios from "axios";
-import { Line } from "react-chartjs-2";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import {
+  TextField,
+  Button,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+} from "@mui/material";
+import { fetchCurrencyDynamics } from "../../api/currencyApi";
+import "./Dynamics.css";
 
 const CurrencyDynamics = () => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [currencyId, setCurrencyId] = useState("");
-  const [data, setData] = useState({});
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [currency, setCurrency] = useState("");
+  const [data, setData] = useState([]);
 
-  const fetchDynamics = async () => {
-    try {
-      const response = await axios.get(
-        `https://www.nbrb.by/api/exrates/rates/dynamics/${currencyId}?startdate=${startDate}&enddate=${endDate}`
-      );
-      const rates = response.data;
-      const labels = rates.map((rate) => rate.Date);
-      const values = rates.map((rate) => rate.Cur_OfficialRate);
-
-      setData({
-        labels,
-        datasets: [
-          {
-            label: "Курс валюты",
-            data: values,
-            borderColor: "rgba(75,192,192,1)",
-            fill: false,
-          },
-        ],
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
+  const handleFetchData = async () => {
+    if (startDate && endDate && currency) {
+      const result = await fetchCurrencyDynamics(startDate, endDate, currency);
+      setData(result);
     }
   };
 
   return (
-    <div>
-      <h1>Динамика курса валют</h1>
-      <input
-        type="date"
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-      />
-      <input
-        type="date"
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="ID валюты"
-        value={currencyId}
-        onChange={(e) => setCurrencyId(e.target.value)}
-      />
-      <button onClick={fetchDynamics}>Получить динамику</button>
-      {data.labels && <Line data={data} />}
+    <div className="section-3">
+      <h1 className="text-well-3">Динамика курса валют</h1>
+      <div className="subsection-3">
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Дата с"
+            value={startDate}
+            onChange={(newValue) => setStartDate(newValue)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+          <DatePicker
+            label="Дата по"
+            value={endDate}
+            onChange={(newValue) => setEndDate(newValue)}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
+        <FormControl>
+          <InputLabel id="currency-label">Валюта</InputLabel>
+          <Select
+            labelId="currency-label"
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value)}
+          >
+            <MenuItem value="145">USD</MenuItem>
+            <MenuItem value="292">EUR</MenuItem>
+            <MenuItem value="298">RUB</MenuItem>
+            {/* Add other currencies as needed */}
+          </Select>
+        </FormControl>
+        <Button
+          id="button-well-3"
+          variant="contained"
+          onClick={handleFetchData}
+        >
+          Получить данные
+        </Button>
+      </div>
+      <div>
+        {data.length > 0 &&
+          data.map((item) => (
+            <div key={item.Date}>
+              {item.Date}: {item.Cur_OfficialRate}
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,17 @@
+.section-2 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+}
+
+.subsection-2 {
+  display: flex;
+}
+
+#button-well-2 {
+  border-radius: 10px;
+  color: #141414;
+  margin-left: 60px;
+  background-color: #f5f5f5;
+}
