@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -25,16 +25,25 @@ const CurrencyDynamics = () => {
     searchParams.get("endDate") ? new Date(searchParams.get("endDate")) : null
   );
   const [currency, setCurrency] = useState(
-    searchParams.get("currency") ? new Date(searchParams.get("currency")) : ""
+    searchParams.get("currencyId") ? searchParams.get("currencyId") : ""
   );
   const [data, setData] = useState([]);
 
   const handleFetchData = async () => {
     if (startDate && endDate && currency) {
+      setSearchParams({
+        startDate: startDate,
+        endDate: endDate,
+        currencyId: currency,
+      });
       const result = await fetchCurrencyDynamics(startDate, endDate, currency);
       setData(result);
     }
   };
+
+  useEffect(() => {
+    handleFetchData();
+  }, []);
 
   return (
     <div className="section-3">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -14,28 +14,35 @@ import "./style/Converter.css";
 const CurrencyConverter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [fromCurrency, setFromCurrency] = useState(
-    searchParams.get("fromCurrency")
-      ? new Date(searchParams.get("fromCurrency"))
-      : ""
+    searchParams.get("fromCurrencyId") ? searchParams.get("fromCurrencyId") : ""
   );
   const [toCurrency, setToCurrency] = useState(
-    searchParams.get("toCurrency")
-      ? new Date(searchParams.get("toCurrency"))
-      : ""
+    searchParams.get("toCurrencyId") ? searchParams.get("toCurrencyId") : ""
   );
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState(
+    searchParams.get("amount") ? new Number(searchParams.get("amount")) : ""
+  );
   const [conversionResult, setConversionResult] = useState(null);
 
   const handleConvert = async () => {
     if (fromCurrency && toCurrency && amount) {
-      const rate = await fetchCurrencyConversionRate(
-        fromCurrency,
-        toCurrency,
-        new Date().toISOString().split("T")[0]
-      );
+      setSearchParams({
+        fromCurrencyId: fromCurrency,
+        toCurrencyId: toCurrency,
+        amount: amount,
+      });
+      const rate = await fetchCurrencyConversionRate({
+        fromCurrencyId: fromCurrency,
+        toCurrencyId: toCurrency,
+        date: new Date().toISOString().split("T")[0],
+      });
       setConversionResult(rate * amount);
     }
   };
+
+  useEffect(() => {
+    handleConvert();
+  }, []);
 
   return (
     <div className="section-2">

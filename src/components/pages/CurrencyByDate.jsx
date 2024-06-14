@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@mui/material";
@@ -28,6 +28,10 @@ const CurrencyByDate = () => {
       console.error("Ошибка", error);
     }
   };
+
+  useEffect(() => {
+    fetchCurrencies();
+  }, []);
 
   return (
     <div className="section-1">

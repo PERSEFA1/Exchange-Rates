@@ -16,11 +16,11 @@ export const fetchCurrencyDynamics = async (startDate, endDate, currencyId) => {
   }
 };
 
-export const fetchCurrencyConversionRate = async (
+export const fetchCurrencyConversionRate = async ({
   fromCurrencyId,
   toCurrencyId,
-  date
-) => {
+  date,
+}) => {
   try {
     const responseFrom = await fetch(
       `https://api.nbrb.by/exrates/rates/${fromCurrencyId}?ondate=${date}`
