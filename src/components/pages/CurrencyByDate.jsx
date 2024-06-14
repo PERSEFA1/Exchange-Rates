@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { Button } from "@mui/material";
 import "./style/ByDate.css";
@@ -8,12 +9,16 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField";
 
 const CurrencyByDate = () => {
-  const [date, setDate] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [date, setDate] = useState(
+    searchParams.get("date") ? new Date(searchParams.get("date")) : ""
+  );
   const [currencies, setCurrencies] = useState([]);
 
   const fetchCurrencies = async () => {
     if (!date) return;
     const formattedDate = date.toISOString().split("T")[0];
+    setSearchParams({ date: date });
     try {
       const response = await axios.get(
         `https://www.nbrb.by/api/exrates/rates?ondate=${formattedDate}&periodicity=0`
@@ -44,6 +49,15 @@ const CurrencyByDate = () => {
           onClick={fetchCurrencies}
         >
           Получить курсы
+        </Button>
+        <Button
+          id="button-4"
+          variant="contained"
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+          }}
+        >
+          Поделиться
         </Button>
       </div>
       <ul>

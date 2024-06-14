@@ -7,12 +7,22 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import { fetchCurrencyConversionRate } from "../../api/currencyApi";
 import "./style/Converter.css";
 
 const CurrencyConverter = () => {
-  const [fromCurrency, setFromCurrency] = useState("");
-  const [toCurrency, setToCurrency] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [fromCurrency, setFromCurrency] = useState(
+    searchParams.get("fromCurrency")
+      ? new Date(searchParams.get("fromCurrency"))
+      : ""
+  );
+  const [toCurrency, setToCurrency] = useState(
+    searchParams.get("toCurrency")
+      ? new Date(searchParams.get("toCurrency"))
+      : ""
+  );
   const [amount, setAmount] = useState("");
   const [conversionResult, setConversionResult] = useState(null);
 
@@ -62,6 +72,15 @@ const CurrencyConverter = () => {
         />
         <Button id="button-well-2" variant="contained" onClick={handleConvert}>
           Конвертировать
+        </Button>
+        <Button
+          id="button-4"
+          variant="contained"
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+          }}
+        >
+          Поделиться
         </Button>
       </div>
       {conversionResult !== null && (

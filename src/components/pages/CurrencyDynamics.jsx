@@ -10,13 +10,23 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import { fetchCurrencyDynamics } from "../../api/currencyApi";
 import "./style/Dynamics.css";
 
 const CurrencyDynamics = () => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [currency, setCurrency] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [startDate, setStartDate] = useState(
+    searchParams.get("startDate")
+      ? new Date(searchParams.get("startDate"))
+      : null
+  );
+  const [endDate, setEndDate] = useState(
+    searchParams.get("endDate") ? new Date(searchParams.get("endDate")) : null
+  );
+  const [currency, setCurrency] = useState(
+    searchParams.get("currency") ? new Date(searchParams.get("currency")) : ""
+  );
   const [data, setData] = useState([]);
 
   const handleFetchData = async () => {
@@ -64,6 +74,15 @@ const CurrencyDynamics = () => {
           onClick={handleFetchData}
         >
           Получить данные
+        </Button>
+        <Button
+          id="button-4"
+          variant="contained"
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+          }}
+        >
+          Поделиться
         </Button>
       </div>
       <div>

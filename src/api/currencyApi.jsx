@@ -1,4 +1,9 @@
 export const fetchCurrencyDynamics = async (startDate, endDate, currencyId) => {
+  setSearchParams({
+    startDate: startDate,
+    endDate: endDate,
+    currencyId: currencyId,
+  });
   try {
     const startDateString = startDate.toISOString().split("T")[0];
     const endDateString = endDate.toISOString().split("T")[0];
@@ -21,6 +26,11 @@ export const fetchCurrencyConversionRate = async (
   toCurrencyId,
   date
 ) => {
+  setSearchParams({
+    fromCurrencyId: fromCurrencyId,
+    toCurrencyId: toCurrencyId,
+    date: date,
+  });
   try {
     const responseFrom = await fetch(
       `https://api.nbrb.by/exrates/rates/${fromCurrencyId}?ondate=${date}`

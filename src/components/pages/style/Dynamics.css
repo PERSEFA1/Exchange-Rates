@@ -23,3 +23,10 @@
 #currency {
   margin-left: 30px;
 }
+
+#button-4 {
+  border-radius: 10px;
+  color: #141414;
+  margin-left: 60px;
+  background-color: #fa612a;
+}
